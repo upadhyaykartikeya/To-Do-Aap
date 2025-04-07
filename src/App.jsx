@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import Navbar from './component/Navbar'
+const { v4: uuidv4 } = require('uuid');
+
 
 function App() {
 
@@ -13,9 +15,19 @@ function App() {
 
   }
   const handleAdd = ()=> {
-    setTodos([...todos, {todo, isCompleted: false}])
+    setTodos([...todos, {id: uuidv4, todo, isCompleted: false}])
     setTodo("")
   }
+
+  const handleChange = (e) => {
+    setTodo(e.target.value)
+  }
+  
+  const handleCheckbox (e) => {
+    
+  }
+  
+  
 
   return (
     <>
@@ -28,13 +40,17 @@ function App() {
       </div>
       <h2 className=' text-lg font-bold'>Your Todos</h2>
       <div className="todos">
-        <div className="todo flex">
-          <div className="text">myTodo</div>
+        {todos.map(item=>{
+
+          return <div className="todo flex w-1/2 justify-between my-3">
+            <input onChange={handleCheckbox} value={item.isCompleted} type="checkbox" />
+          <div className={item.isCompleted?"line-through":""}>{item.todo}</div>
           <div className="buttons">
             <button onClick={handleEdit} className='bg-stone-700 hover:bg-stone-600 text-white rounded-md text-sm font-bold p-2 py-1 mx-1'>Edit</button>
             <button onClick={handleDelete} className='bg-stone-700 hover:bg-stone-600 text-white rounded-md text-sm font-bold p-2 py-1 mx-1'>Delete</button>
           </div>
         </div>
+        })}
       </div>
     </div>
     </>
