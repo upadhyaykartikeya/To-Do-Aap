@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Navbar from './component/Navbar'
-const { v4: uuidv4 } = require('uuid');
+import { v4 as uuidv4 } from 'uuid';
 
 
 function App() {
@@ -11,20 +11,36 @@ function App() {
   const handleEdit = ()=> {
     
   }
-  const handleDelete = ()=> {
-
+  
+  const handleDelete = (e, id)=> {
+    let index = todos.findIndex(item=>{
+      return item.id === id;
+    })
+    let newTodos = todos.filter(item=>{
+      return item.id !== id;
+    })
+    setTodos(newTodos)
   }
+
+
   const handleAdd = ()=> {
-    setTodos([...todos, {id: uuidv4, todo, isCompleted: false}])
+    setTodos([...todos, {id: uuidv4(), todo, isCompleted:false}])
     setTodo("")
   }
+
 
   const handleChange = (e) => {
     setTodo(e.target.value)
   }
   
-  const handleCheckbox (e) => {
-    
+  const handleCheckbox = (e) => {
+    let id = e.target.name;
+    let index = todos.findIndex(item=>{
+      return item.id === id;
+    })
+    let newTodos = [...todos];
+    newTodos[index].isCompleted = !newTodos[index].isCompleted;
+    setTodos(newTodos)
   }
   
   
@@ -42,12 +58,12 @@ function App() {
       <div className="todos">
         {todos.map(item=>{
 
-          return <div className="todo flex w-1/2 justify-between my-3">
-            <input onChange={handleCheckbox} value={item.isCompleted} type="checkbox" />
+          return <div key={item.id} className="todo flex w-1/2 justify-between my-3">
+            <input name={String(item.id)} onChange={handleCheckbox} value={item.isCompleted} type="checkbox" id="" />
           <div className={item.isCompleted?"line-through":""}>{item.todo}</div>
           <div className="buttons">
             <button onClick={handleEdit} className='bg-stone-700 hover:bg-stone-600 text-white rounded-md text-sm font-bold p-2 py-1 mx-1'>Edit</button>
-            <button onClick={handleDelete} className='bg-stone-700 hover:bg-stone-600 text-white rounded-md text-sm font-bold p-2 py-1 mx-1'>Delete</button>
+            <button onClick={(e)=>{handleDelete(e, item.id)}} className='bg-stone-700 hover:bg-stone-600 text-white rounded-md text-sm font-bold p-2 py-1 mx-1'>Delete</button>
           </div>
         </div>
         })}
