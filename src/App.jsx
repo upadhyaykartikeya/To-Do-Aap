@@ -13,9 +13,6 @@ function App() {
   }
   
   const handleDelete = (e, id)=> {
-    let index = todos.findIndex(item=>{
-      return item.id === id;
-    })
     let newTodos = todos.filter(item=>{
       return item.id !== id;
     })
@@ -52,15 +49,18 @@ function App() {
       <div className="addTodo my-5">
         <h2 className='font-bold tex-lg'>Add To-do</h2>
       <input onChange={handleChange} value={todo} className='w-1/2' type="text" />
-      <button onClick={handleAdd} className='bg-stone-700 hover:bg-stone-600 text-white rounded-md text-sm font-bold p-2 py-1 mx-6'>Add</button>
+      <button onClick={handleAdd} className='bg-stone-700 hover:bg-stone-600 text-white rounded-md text-sm font-bold p-2 py-1 mx-6'>Save</button>
       </div>
       <h2 className=' text-lg font-bold'>Your Todos</h2>
       <div className="todos">
+      {todos.length === 0 && <div className='m-5'>No Todos to display</div> }
         {todos.map(item=>{
 
           return <div key={item.id} className="todo flex w-1/2 justify-between my-3">
+            <div className='flex gap-5'>
             <input name={String(item.id)} onChange={handleCheckbox} value={item.isCompleted} type="checkbox" id="" />
           <div className={item.isCompleted?"line-through":""}>{item.todo}</div>
+            </div>
           <div className="buttons">
             <button onClick={handleEdit} className='bg-stone-700 hover:bg-stone-600 text-white rounded-md text-sm font-bold p-2 py-1 mx-1'>Edit</button>
             <button onClick={(e)=>{handleDelete(e, item.id)}} className='bg-stone-700 hover:bg-stone-600 text-white rounded-md text-sm font-bold p-2 py-1 mx-1'>Delete</button>
